@@ -1,30 +1,29 @@
 package com.presidio.movieBooking.controllers;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import javax.persistence.Id;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.presidio.movieBooking.models.Login;
-import com.presidio.movieBooking.models.Register;
+import com.presidio.movieBooking.models.Movie;
 import com.presidio.movieBooking.models.User;
-import com.presidio.movieBooking.services.UserRepository;
+import com.presidio.movieBooking.services.MovieService;
 import com.presidio.movieBooking.services.UserService;
 
-import antlr.collections.List;
-import net.bytebuddy.dynamic.scaffold.MethodRegistry.Handler.ForAbstractMethod;
 
 @Controller
 public class MovieController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	MovieService movieService;
 	
 	
 	@RequestMapping("/login")
@@ -34,7 +33,8 @@ public class MovieController {
 		if((login.getEmail() !=null) && (login.getPassword() != null)) {
 			if(userService.getUserById(login.getEmail()) != null && userService.getUserById(login.getEmail()).getPassword().equals(login.getPassword())) {
 				System.out.print("entered valid");
-				mv.setViewName("redirect:/moviehome");
+				String redicect_url = "redirect:/moviehome-"+login.getEmail();
+				mv.setViewName(redicect_url);
 				return mv;
 			}else {
 				mv.addObject("invalidCredentials", "Invalid credentials");
@@ -66,10 +66,26 @@ public class MovieController {
 		return mv;
 	}
 	
-	@RequestMapping("/moviehome")
-	public ModelAndView moviehome() {
+	@RequestMapping("/moviehome-{email}")
+	public ModelAndView moviehome(@PathVariable("email") String email) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("moviehome");
+		List<Movie> movies = movieService.getAllMovies();
+		mv.addObject("movies", movies);
+		for(Movie m:movies) {
+			System.out.println(m.getMovieName());
+		}
+		System.out.println(email);
 		return mv;
  	}
+	
+	@RequestMapping("/admin")
+	public ModelAndView admin(Movie movie) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/admin");
+		if(movie.getMovieName()!=null && movie.getAuthor()!=null && movie.getDescription()!=null) {
+			movieService.saveMovie(movie);
+		}
+		return mv;
+	}
 }
