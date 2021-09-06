@@ -27,18 +27,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUserById(String email) {
-		userdata.deleteById(email);
+	public void deleteUserById(int id) {
+		userdata.deleteById(id);
 	}
 
 	@Override
-	public User getUserById(String email) {
-		User user = null;
-		Optional<User> u = userdata.findById(email);
-		if(u.isPresent()) {
-			user = u.get();
-		}
-		return user;
+	public User getUserByEmail(String email) {
+		return userdata.getUserByEmail(email);
+	}
+	
+	@Override
+	public User getUserById(int id) {
+		return userdata.getUserById(id);
+	}
+
+
+	@Override
+	public void setLogin(String email) {
+		userdata.setLogin(email);
+	}
+
+	@Override
+	public void setLogout(int id) {
+		userdata.setLogout(id);		
 	}
 	
 
