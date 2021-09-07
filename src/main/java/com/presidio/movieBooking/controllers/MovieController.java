@@ -50,7 +50,6 @@ public class MovieController {
 				mv.addObject("invalidCredentials", "Invalid credentials");
 			}
 		}
-		
 		return mv;
 	}
 	
@@ -116,12 +115,6 @@ public class MovieController {
 		return mv;
 	}
 	
-//	@RequestMapping("/booking-{id}-{movie_no}")
-//	public ModelAndView bookredirect(@PathVariable("id") int id,@PathVariable("movie_no") int movie_no) {
-//		ModelAndView mv = new ModelAndView();
-//		String redirect_url = "/booking-{id}-{movie_no}-"+
-//		return mv;
-//	}
 	
 	@RequestMapping("/booking-{id}-{movie_no}")
 	public ModelAndView book(@PathVariable("id") int id,@PathVariable("movie_no") int movie_no, Integer noOfTickets) {
@@ -144,6 +137,23 @@ public class MovieController {
 				mv.setViewName("redirect:/moviehome-"+id);
 			}
 		}		
+		return mv;
+	}
+	
+	@RequestMapping("mybookings-{id}")
+	public ModelAndView mybookings(@PathVariable("id") int id){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("mybookings");
+		List<Bookings> bookings =  bookingService.getAllUserBookings(id);
+		mv.addObject("bookings",bookings);
+		return mv;
+	}
+	
+	@RequestMapping("cancelbooking-{userId}-{movie_no}")
+	public ModelAndView cancelbooking(@PathVariable("userId") int userId,@PathVariable("movie_no") int movie_no) {
+		ModelAndView mv = new ModelAndView();
+		bookingService.cancelBooking(userId, movie_no);
+		mv.setViewName("redirect:/mybookings-"+userId);
 		return mv;
 	}
 }

@@ -2,10 +2,9 @@
     pageEncoding="UTF-8"%>
     <%@ page import="java.util.List"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <html>
 	<head>
-		<title>movie booking system</title>
+		<title>Movie Booking System</title>
 		<style>
 			/* This first section is a simple "reset". It allows the navbar to push up against the top of the browser window with no white space around it. This code also sets the default font for your whole page. Put it at the very top of your css page.  */
 html, body, div, p, ul, li {
@@ -108,7 +107,7 @@ table thead {
 table td, table th {
   border-bottom: 1px solid #333;
   height: 80px;
-  width: calc(100% / 4);
+  width: calc(100% / 3);
   vertical-align: middle;
 }
 
@@ -117,7 +116,7 @@ table tbody td {
   border-right: 1px solid #333;
 }
 
-table tbody td:nth-child(4){
+table tbody td:nth-child(3){
   border-right: none;
 }
 
@@ -136,36 +135,34 @@ table tbody td:nth-child(4){
 		</style>
 	</head>
 	<body>
-	<div class="nav">
-  <ul>
-    <li><a href="/" class="nav-link">Home</a></li>
-    <div class="topnav-right">
-    <li><a href="/mybookings-${id}" class="nav-link"><em>MyBookings</em></a></li>
-    <li><a href="/" class="nav-link"><em>Welcome: ${username}</em></a></li>
-    <li><a href="/logout-${id}" onClick="logout" class="nav-link">Logout</a></li>
-    </div>
-    
-  </ul>
-</div>
 	
-          <table class="table">
+	<div class="nav">
+  		<ul>
+		    <li><a href="/" class="nav-link">Home</a></li>
+		    <div class="topnav-right">
+			    <li><a href="/moviehome-${id}" class="nav-link"><em>Movies</em></a></li>
+			    <li><a href="/" class="nav-link"><em>Welcome: ${username}</em></a></li>
+			    <li><a href="/logout-${id}" onClick="logout" class="nav-link">Logout</a></li>
+    		</div>
+  		</ul>
+	</div>
+	 <table class="table">
       <thead>
         <tr>
-          <th colspan="4">MOVIES</th>
+          <th colspan="3">YOUR BOOKINGS</th>
         </tr> 
       </thead>
       <tbody>
-        <c:forEach items="${movies}" var="movie">
+        <c:forEach items="${bookings}" var="booking">
                     <tr>
-                        <td>${movie.movieName}</td>
-                        <td>${movie.author}</td>
-                        <td>${movie.description}</td>
-                        <td><a href="/booking-${id}-${movie.movie_no}">Book</a></td>
+                        <td>${booking.id.movie_no}</td>
+                        <td>${booking.noOfTickets}</td>
+                        <td><a href="/cancelbooking-${booking.id.userId}-${booking.id.movie_no}">Cancel Booking</a></td>
+              
                     </tr>
 
                 </c:forEach>
        </tbody>
     </table>
 	</body>
-	
 </html>

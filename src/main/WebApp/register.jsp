@@ -270,7 +270,6 @@ html, body, div, p, ul, li {
   <ul>
     <li><a href="/moviehome" class="nav-link">Home</a></li>
     <div class="topnav-right">
-    <li><a href="/moviehome" class="nav-link"><em>MyBookings</em></a></li>
     <li><a href="/register" class="nav-link">Register</a></li>
     <li><a href="/login" class="nav-link">Login</a></li>
     </div>
