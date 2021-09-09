@@ -1,17 +1,20 @@
 package com.presidio.movieBooking.controllers;
 
-import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.MvcNamespaceHandler;
 
 import com.presidio.movieBooking.models.BookingCompositeKey;
 import com.presidio.movieBooking.models.Bookings;
@@ -34,6 +37,8 @@ public class MovieController {
 	
 	@Autowired
 	BookingRepositoryService bookingService;
+	
+	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/webapp/imagedata";
 	
 	
 	@RequestMapping("/login")
@@ -79,33 +84,27 @@ public class MovieController {
 	//@ResponseBody
 	public ModelAndView moviehome(@PathVariable("id") int id) {
 		ModelAndView mv = new ModelAndView();
-		if(userService.getUserById(id)==null) {
-			mv.setViewName("redirect:/register");
-		}else {
-			if(userService.getUserById(id).isLogin()) {
-				mv.setViewName("moviehome");
-				mv.addObject("id", id);
-				mv.addObject("username",userService.getUserById(id).getUserName());
-				List<Movie> movies = movieService.getAllMovies();
-				mv.addObject("movies", movies);
+		if(userService.getUserById(id).isLogin()) {
+			if(userService.getUserById(id)==null) {
+				mv.setViewName("redirect:/register");
 			}else {
-				mv.setViewName("redirect:/login");
+				if(userService.getUserById(id).isLogin()) {
+					mv.setViewName("moviehome");
+					mv.addObject("id", id);
+					mv.addObject("username",userService.getUserById(id).getUserName());
+					List<Movie> movies = movieService.getAllMovies();
+					mv.addObject("movies", movies);
+				}else {
+					mv.setViewName("redirect:/login");
+				}
 			}
+		}else {
+			mv.setViewName("redirect:/login");
 		}
-		
 		
 		return mv;
  	}
 	
-	@RequestMapping("/admin")
-	public ModelAndView admin(Movie movie) {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/admin");
-		if(movie.getMovieName()!=null && movie.getAuthor()!=null && movie.getDescription()!=null) {
-			movieService.saveMovie(movie);
-		}
-		return mv;
-	}
 	
 	@RequestMapping("/logout-{id}")
 	public ModelAndView logout(@PathVariable("id") int id) {
@@ -116,27 +115,31 @@ public class MovieController {
 	}
 	
 	
-	@RequestMapping("/booking-{id}-{movie_no}")
-	public ModelAndView book(@PathVariable("id") int id,@PathVariable("movie_no") int movie_no, Integer noOfTickets) {
+	@RequestMapping("/booking-{id}-{movie_no}-{movieName}")
+	public ModelAndView book(@PathVariable("id") int id,@PathVariable("movie_no") int movie_no, @PathVariable("movieName")  String movieName,Integer noOfTickets) {
 		System.out.println("hello  ......"+id);
-		
 		ModelAndView mv = new ModelAndView();
+		if(userService.getUserById(id).isLogin()) {
 		mv.setViewName("book");
 		mv.addObject("id",id);
 		mv.addObject("movie_no",movie_no);
+		mv.addObject("movieName",movieName);
 		if(noOfTickets != null) {
 			
 			if(noOfTickets.intValue()>0) {
 				System.out.println(id);
 				System.out.println(movie_no);
 				System.out.println(noOfTickets.intValue());
-				Bookings booking = new Bookings(new BookingCompositeKey(movie_no,id),noOfTickets.intValue());
+				Bookings booking = new Bookings(new BookingCompositeKey(movie_no,id),noOfTickets.intValue(),movieName);
 				System.out.println(booking.getNoOfTickets());
 				System.out.println(booking.getId());
 				bookingService.saveBooking(booking);
 				mv.setViewName("redirect:/moviehome-"+id);
 			}
-		}		
+		}
+		}else {
+			mv.setViewName("redirect:/login");
+		}
 		return mv;
 	}
 	
@@ -156,4 +159,25 @@ public class MovieController {
 		mv.setViewName("redirect:/mybookings-"+userId);
 		return mv;
 	}
+	@RequestMapping("/admin")
+	public ModelAndView admin(@RequestParam(value="movieName",required = false)String movieName,@RequestParam(value="author",required = false) String author,@RequestParam(value="description",required = false) String description,@RequestParam(value="file",required = false) MultipartFile file)throws IOException {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/admin");
+		if(movieName!=null && author!=null && description!=null) {
+			Movie movie = new Movie();
+			movie.setMovieName(movieName);
+			movie.setAuthor(author);
+			movie.setDescription(description);
+			String filename = movie.getMovieName()+file.getOriginalFilename().substring(file.getOriginalFilename().length()-4);
+			Path fileNameAndPath = Paths.get(uploadDirectory,filename);
+		
+			Files.write(fileNameAndPath, file.getBytes());
+			
+			movie.setMoviePhotoName(filename);
+			movieService.saveMovie(movie);
+		}
+		return mv;
+	}
+
 }
+

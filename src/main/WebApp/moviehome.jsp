@@ -6,8 +6,9 @@
 <html>
 	<head>
 		<title>movie booking system</title>
+		
 		<style>
-			/* This first section is a simple "reset". It allows the navbar to push up against the top of the browser window with no white space around it. This code also sets the default font for your whole page. Put it at the very top of your css page.  */
+/* 			/* This first section is a simple "reset". It allows the navbar to push up against the top of the browser window with no white space around it. This code also sets the default font for your whole page. Put it at the very top of your css page.  */
 html, body, div, p, ul, li {
   margin: 0;
   padding: 0;
@@ -76,7 +77,8 @@ html, body, div, p, ul, li {
 /* Right-aligned section inside the top navigation */
 .topnav-right {
   float: right;
-}
+} 
+
 body{
   background: #eee;
   padding: 10px 60px;
@@ -132,11 +134,13 @@ table tbody td:nth-child(4){
   
   table td, table th {
   height: 60px;
-}
+} 
+
 		</style>
+
 	</head>
 	<body>
-	<div class="nav">
+<div class="nav">
   <ul>
     <li><a href="/" class="nav-link">Home</a></li>
     <div class="topnav-right">
@@ -148,24 +152,34 @@ table tbody td:nth-child(4){
   </ul>
 </div>
 	
-          <table class="table">
+        <table class="table">
       <thead>
         <tr>
           <th colspan="4">MOVIES</th>
         </tr> 
       </thead>
+      <thead>
+      	<th>Movie Name</th>
+      	<th>Director</th>
+      	<th>Movie Description</th>
+      	<th>Book Tickets</th>
+      </thead>
       <tbody>
         <c:forEach items="${movies}" var="movie">
                     <tr>
-                        <td>${movie.movieName}</td>
+                        <td>
+                        <img src="/imagedata/${movie.moviePhotoName}" style="width:150px; height:200px;" alt=${movie.movieName}/>
+                        </td>
                         <td>${movie.author}</td>
                         <td>${movie.description}</td>
-                        <td><a href="/booking-${id}-${movie.movie_no}">Book</a></td>
+                        <td><a href="/booking-${id}-${movie.movie_no}-${movie.movieName}">Book</a>
+                        	
+                        </td>
                     </tr>
 
                 </c:forEach>
        </tbody>
     </table>
-	</body>
+    	</body>
 	
 </html>

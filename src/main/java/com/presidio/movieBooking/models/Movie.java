@@ -12,10 +12,16 @@ public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int movie_no;
-	@Column(unique = true)
 	public String movieName;
 	public String author;
 	public String description;
+	public String moviePhotoName;
+	public String getMoviePhotoName() {
+		return moviePhotoName;
+	}
+	public void setMoviePhotoName(String moviePhotoName) {
+		this.moviePhotoName = moviePhotoName;
+	}
 	public int getMovie_no() {
 		return movie_no;
 	}

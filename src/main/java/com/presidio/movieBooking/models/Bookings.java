@@ -10,14 +10,22 @@ public class Bookings {
 	private BookingCompositeKey id; 
 	
 	private int noOfTickets;
+	private String movieName;
 
+	public String getMovieName() {
+		return movieName;
+	}
+	public void setMovieName(String movieName) {
+		this.movieName = movieName;
+	}
 	public Bookings() {
 		
 	}
-	public Bookings(BookingCompositeKey id, int noOfTickets) {
+	public Bookings(BookingCompositeKey id, int noOfTickets,String movieName) {
 		super();
 		this.id = id;
 		this.noOfTickets = noOfTickets;
+		this.movieName = movieName;
 	}
 
 	public BookingCompositeKey getId() {

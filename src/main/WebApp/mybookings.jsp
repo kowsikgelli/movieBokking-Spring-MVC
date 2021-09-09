@@ -1,3 +1,5 @@
+<%@page import="com.presidio.movieBooking.controllers.MovieController"%>
+<%@page import="com.presidio.movieBooking.services.MovieService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="java.util.List"%>
@@ -132,8 +134,18 @@ table tbody td:nth-child(3){
   table td, table th {
   height: 60px;
 }
+#book{
+text-decoration:none;
+}
 		</style>
+		<script type="text/javascript">
+		function cancelalert(){
+			return confirm("are you sure you want to cancel the booking");
+		}
+		</script>
 	</head>
+	
+	
 	<body>
 	
 	<div class="nav">
@@ -142,7 +154,7 @@ table tbody td:nth-child(3){
 		    <div class="topnav-right">
 			    <li><a href="/moviehome-${id}" class="nav-link"><em>Movies</em></a></li>
 			    <li><a href="/" class="nav-link"><em>Welcome: ${username}</em></a></li>
-			    <li><a href="/logout-${id}" onClick="logout" class="nav-link">Logout</a></li>
+			    <li><a href="/logout-${id}"  onClick="logout" class="nav-link">Logout</a></li>
     		</div>
   		</ul>
 	</div>
@@ -152,13 +164,20 @@ table tbody td:nth-child(3){
           <th colspan="3">YOUR BOOKINGS</th>
         </tr> 
       </thead>
+      <thead>
+      	<th>Movie Name</th>
+      	<th>No of Tickets</th>
+      	<th>Cancel Ticket</th>
+      </thead>
       <tbody>
         <c:forEach items="${bookings}" var="booking">
                     <tr>
-                        <td>${booking.id.movie_no}</td>
+                        <td>
+                        <img src="/imagedata/${booking.movieName}.jpg" style="width:150px; height:200px;" alt=${movie.movieName}/>
+                        </td>
                         <td>${booking.noOfTickets}</td>
-                        <td><a href="/cancelbooking-${booking.id.userId}-${booking.id.movie_no}">Cancel Booking</a></td>
-              
+                        <td><a href="/cancelbooking-${booking.id.userId}-${booking.id.movie_no}" onclick="cancelalert()" id="link">Cancel Booking</a></td>
+              			
                     </tr>
 
                 </c:forEach>
