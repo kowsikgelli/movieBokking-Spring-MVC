@@ -6,10 +6,11 @@
 <html>
 	<head>
 		<title>movie booking system</title>
+		<link rel="stylesheet" href="home.css">
 		
 		<style>
 /* 			/* This first section is a simple "reset". It allows the navbar to push up against the top of the browser window with no white space around it. This code also sets the default font for your whole page. Put it at the very top of your css page.  */
-html, body, div, p, ul, li {
+ html, body, div, p, ul, li {
   margin: 0;
   padding: 0;
   border: 0;
@@ -79,7 +80,7 @@ html, body, div, p, ul, li {
   float: right;
 } 
 
-body{
+/* body{
   background: #eee;
   padding: 10px 60px;
   font-family: 'Noto Sans', sans-serif;
@@ -134,7 +135,7 @@ table tbody td:nth-child(4){
   
   table td, table th {
   height: 60px;
-} 
+}  */
 
 		</style>
 
@@ -150,9 +151,10 @@ table tbody td:nth-child(4){
     </div>
     
   </ul>
-</div>
+</div> 
+<h1>Book Your Show</h1>
 	
-        <table class="table">
+ <%--        <table class="table">
       <thead>
         <tr>
           <th colspan="4">MOVIES</th>
@@ -172,14 +174,25 @@ table tbody td:nth-child(4){
                         </td>
                         <td>${movie.author}</td>
                         <td>${movie.description}</td>
-                        <td><a href="/booking-${id}-${movie.movie_no}-${movie.movieName}">Book</a>
+                        
                         	
                         </td>
                     </tr>
 
                 </c:forEach>
        </tbody>
-    </table>
-    	</body>
+    </table> --%>
+    
+    <div class="Movies">
+    	<c:forEach items="${movies}" var="movie">
+    		<div class="itemBox">
+    		<a href="/booking-${id}-${movie.movie_no}-${movie.movieName}">
+    		<img src="/imagedata/${movie.moviePhotoName}"  alt=${movie.movieName}/>
+    		</a>
+    		
+    		</div>
+    	</c:forEach>
+    </div>
+   </body>
 	
 </html>

@@ -16,6 +16,13 @@ public class Movie {
 	public String author;
 	public String description;
 	public String moviePhotoName;
+	public String trailerLink;
+	public String getTrailerLink() {
+		return trailerLink;
+	}
+	public void setTrailerLink(String trailerLink) {
+		this.trailerLink = trailerLink;
+	}
 	public String getMoviePhotoName() {
 		return moviePhotoName;
 	}

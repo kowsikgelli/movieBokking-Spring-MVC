@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -124,6 +123,7 @@ public class MovieController {
 		mv.addObject("id",id);
 		mv.addObject("movie_no",movie_no);
 		mv.addObject("movieName",movieName);
+		mv.addObject("movie",movieService.getMovieById(movie_no));
 		if(noOfTickets != null) {
 			
 			if(noOfTickets.intValue()>0) {
@@ -160,7 +160,7 @@ public class MovieController {
 		return mv;
 	}
 	@RequestMapping("/admin")
-	public ModelAndView admin(@RequestParam(value="movieName",required = false)String movieName,@RequestParam(value="author",required = false) String author,@RequestParam(value="description",required = false) String description,@RequestParam(value="file",required = false) MultipartFile file)throws IOException {
+	public ModelAndView admin(@RequestParam(value="movieName",required = false)String movieName,@RequestParam(value="author",required = false) String author,@RequestParam(value="trailerLink",required = false) String trailerLink,@RequestParam(value="description",required = false) String description,@RequestParam(value="file",required = false) MultipartFile file)throws IOException {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/admin");
 		if(movieName!=null && author!=null && description!=null) {
@@ -168,6 +168,7 @@ public class MovieController {
 			movie.setMovieName(movieName);
 			movie.setAuthor(author);
 			movie.setDescription(description);
+			movie.setTrailerLink(trailerLink);
 			String filename = movie.getMovieName()+file.getOriginalFilename().substring(file.getOriginalFilename().length()-4);
 			Path fileNameAndPath = Paths.get(uploadDirectory,filename);
 		
