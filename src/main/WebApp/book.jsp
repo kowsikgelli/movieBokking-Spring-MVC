@@ -147,6 +147,7 @@ html, body, div, p, ul, li {
         <iframe width="1160" height="650" src="${movie.trailerLink}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
         </iframe>
         <form method="post"  id="form" class="validate" action="booking-${id}-${movie_no}-${movieName}">
+  				<h3>${ticketMessage}</h3>
   			<div class="form-field">
   				<label>No Of Seats</label>
     			<input type="text" name="noOfTickets" id="full-name" placeholder="Enter Number Of Tickets" required />

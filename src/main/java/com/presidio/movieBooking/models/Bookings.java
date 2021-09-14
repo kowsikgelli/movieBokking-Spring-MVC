@@ -2,16 +2,25 @@ package com.presidio.movieBooking.models;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Bookings {
-
+	
+	@Id
 	@EmbeddedId
 	private BookingCompositeKey id; 
 	
 	private int noOfTickets;
 	private String movieName;
+	private double price;
 
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
 	public String getMovieName() {
 		return movieName;
 	}
@@ -21,11 +30,12 @@ public class Bookings {
 	public Bookings() {
 		
 	}
-	public Bookings(BookingCompositeKey id, int noOfTickets,String movieName) {
+	public Bookings(BookingCompositeKey id, int noOfTickets,String movieName,double price) {
 		super();
 		this.id = id;
 		this.noOfTickets = noOfTickets;
 		this.movieName = movieName;
+		this.price = price;
 	}
 
 	public BookingCompositeKey getId() {

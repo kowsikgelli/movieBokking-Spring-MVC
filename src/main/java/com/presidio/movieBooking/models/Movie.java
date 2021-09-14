@@ -1,6 +1,5 @@
 package com.presidio.movieBooking.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +16,27 @@ public class Movie {
 	public String description;
 	public String moviePhotoName;
 	public String trailerLink;
+	public int noOfTicketsAvailable;
+	public int getNoOfTicketsAvailable() {
+		return noOfTicketsAvailable;
+	}
+	public void setNoOfTicketsAvailable(int noOfTicketsAvailable) {
+		this.noOfTicketsAvailable = noOfTicketsAvailable;
+	}
+	public int getNoOfTicketsBooked() {
+		return noOfTicketsBooked;
+	}
+	public void setNoOfTicketsBooked(int noOfTicketsBooked) {
+		this.noOfTicketsBooked = noOfTicketsBooked;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public int noOfTicketsBooked;
+	public double price;
 	public String getTrailerLink() {
 		return trailerLink;
 	}

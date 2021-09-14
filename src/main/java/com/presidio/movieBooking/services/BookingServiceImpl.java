@@ -28,4 +28,19 @@ public class BookingServiceImpl implements BookingRepositoryService {
 		bookingdata.cancelBooking(userId, movie_no);
 	}
 
+	@Override
+	public int getTotalNoOfTiketsBookedForAMovie(int id, String movieName) {
+		return bookingdata.getTotalNoOfTiketsBookedForAMovie(id, movieName);
+	}
+
+	@Override
+	public double getTotalPriceForAUser(int id) {
+		return bookingdata.getTotalPriceForAUser(id);
+	}
+
+	@Override
+	public Bookings getBookingById(int user_id, int movie_no) {
+		return bookingdata.getBookingById(user_id, movie_no);
+	}
+
 }

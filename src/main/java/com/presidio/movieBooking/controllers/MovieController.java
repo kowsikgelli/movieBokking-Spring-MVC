@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jasper.tagplugins.jstl.core.If;
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +45,7 @@ public class MovieController {
 	@RequestMapping("/login")
 	public ModelAndView login(Login login) {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/login");
+		mv.setViewName("/index");
 		if((login.getEmail() !=null) && (login.getPassword() != null)) {
 			if(userService.getUserByEmail(login.getEmail()) != null && userService.getUserByEmail(login.getEmail()).getPassword().equals(login.getPassword())) {
 				userService.setLogin(login.getEmail());
@@ -60,7 +62,7 @@ public class MovieController {
 	@RequestMapping("/register")
 	public ModelAndView register(User user) {
 		ModelAndView  mv = new ModelAndView();
-		mv.setViewName("/register");
+		mv.setViewName("index");
 		if(user.getUserName()!=null &&  user.getEmail()!=null && user.getPassword() != null) {
 			ArrayList<String> emails = new ArrayList<String>();
 			for(User u:userService.getAllUsers()) {
@@ -78,6 +80,7 @@ public class MovieController {
 		}
 		return mv;
 	}
+	
 	
 	@RequestMapping("/moviehome-{id}")
 	//@ResponseBody
@@ -116,25 +119,31 @@ public class MovieController {
 	
 	@RequestMapping("/booking-{id}-{movie_no}-{movieName}")
 	public ModelAndView book(@PathVariable("id") int id,@PathVariable("movie_no") int movie_no, @PathVariable("movieName")  String movieName,Integer noOfTickets) {
-		System.out.println("hello  ......"+id);
 		ModelAndView mv = new ModelAndView();
 		if(userService.getUserById(id).isLogin()) {
 		mv.setViewName("book");
 		mv.addObject("id",id);
 		mv.addObject("movie_no",movie_no);
 		mv.addObject("movieName",movieName);
-		mv.addObject("movie",movieService.getMovieById(movie_no));
+		Movie movie = movieService.getMovieById(movie_no);
+		mv.addObject("movie",movie);
 		if(noOfTickets != null) {
-			
-			if(noOfTickets.intValue()>0) {
-				System.out.println(id);
-				System.out.println(movie_no);
-				System.out.println(noOfTickets.intValue());
-				Bookings booking = new Bookings(new BookingCompositeKey(movie_no,id),noOfTickets.intValue(),movieName);
-				System.out.println(booking.getNoOfTickets());
-				System.out.println(booking.getId());
+			if(movie.noOfTicketsAvailable>= noOfTickets.intValue()) {
+				mv.addObject("ticketMessage", movie.noOfTicketsAvailable+" Tickets Available");
+				movie.setNoOfTicketsAvailable(movie.getNoOfTicketsAvailable()-noOfTickets);
+				movie.setNoOfTicketsBooked(movie.getNoOfTicketsBooked()+noOfTickets);
+				int previouslyBooked = 0;
+				if(bookingService.getBookingById(id, movie_no)!=null) {
+					previouslyBooked = bookingService.getTotalNoOfTiketsBookedForAMovie(id, movieName);
+				}
+				System.out.println(previouslyBooked);
+				Bookings booking = new Bookings(new BookingCompositeKey(movie_no,id),previouslyBooked+noOfTickets.intValue(),movieName,((previouslyBooked+noOfTickets.intValue())*movie.getPrice()));
 				bookingService.saveBooking(booking);
 				mv.setViewName("redirect:/moviehome-"+id);
+			}else if(movie.noOfTicketsAvailable==0) {
+				mv.addObject("ticketMessage", "Soory House Full");
+			}else {
+				mv.addObject("ticketMessage","Only "+ (movie.noOfTicketsAvailable)+" availabe");
 			}
 		}
 		}else {
@@ -148,19 +157,30 @@ public class MovieController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("mybookings");
 		List<Bookings> bookings =  bookingService.getAllUserBookings(id);
-		mv.addObject("bookings",bookings);
+		if(bookings.size()>0) {
+			double totalPrice = bookingService.getTotalPriceForAUser(id);
+			mv.addObject("totalPrice",totalPrice);
+			mv.addObject("bookings",bookings);
+		}else {
+			mv.addObject("message","No Bookings Available");
+			mv.addObject("totalPrice", 0);
+		}
 		return mv;
 	}
 	
 	@RequestMapping("cancelbooking-{userId}-{movie_no}")
 	public ModelAndView cancelbooking(@PathVariable("userId") int userId,@PathVariable("movie_no") int movie_no) {
 		ModelAndView mv = new ModelAndView();
+		Bookings booking =  bookingService.getBookingById(userId, movie_no);
+		Movie movie = movieService.getMovieById(movie_no);
+		movie.setNoOfTicketsAvailable(movie.getNoOfTicketsAvailable()+booking.getNoOfTickets());
+		movie.setNoOfTicketsBooked(movie.getNoOfTicketsBooked()-booking.getNoOfTickets());
 		bookingService.cancelBooking(userId, movie_no);
 		mv.setViewName("redirect:/mybookings-"+userId);
 		return mv;
 	}
 	@RequestMapping("/admin")
-	public ModelAndView admin(@RequestParam(value="movieName",required = false)String movieName,@RequestParam(value="author",required = false) String author,@RequestParam(value="trailerLink",required = false) String trailerLink,@RequestParam(value="description",required = false) String description,@RequestParam(value="file",required = false) MultipartFile file)throws IOException {
+	public ModelAndView admin(@RequestParam(value="movieName",required = false)String movieName,@RequestParam(value="author",required = false) String author,@RequestParam(value="trailerLink",required = false) String trailerLink,@RequestParam(value="noOfTicketsAvailable",required = false)Integer noOfTicketsAvailable,@RequestParam(value="price",required = false)Double price,@RequestParam(value="description",required = false) String description,@RequestParam(value="file",required = false) MultipartFile file)throws IOException {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/admin");
 		if(movieName!=null && author!=null && description!=null) {
@@ -169,6 +189,9 @@ public class MovieController {
 			movie.setAuthor(author);
 			movie.setDescription(description);
 			movie.setTrailerLink(trailerLink);
+			movie.setPrice(price.doubleValue());
+			movie.setNoOfTicketsBooked(0);
+			movie.setNoOfTicketsAvailable(noOfTicketsAvailable.intValue());
 			String filename = movie.getMovieName()+file.getOriginalFilename().substring(file.getOriginalFilename().length()-4);
 			Path fileNameAndPath = Paths.get(uploadDirectory,filename);
 		

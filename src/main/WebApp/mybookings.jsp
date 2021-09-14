@@ -183,5 +183,7 @@ text-decoration:none;
                 </c:forEach>
        </tbody>
     </table>
+    <h2>${message}</h2>
+    <h2>Total Price = $ ${totalPrice}</h2>
 	</body>
 </html>

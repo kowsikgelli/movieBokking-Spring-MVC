@@ -1,0 +1,38 @@
+-->Hajime Isayama	 Anime - Action - Thriller	Attack On Titan	Attack On Titan.jpg	https://www.youtube.com/embed/ZefrVAetxVI
+
+-->James Wan	 Super Hero - Adventure	Aquaman	Aquaman.jpg	https://www.youtube.com/embed/WDkg3h8PCVU
+
+--> Russo brothers	 Action - Adventure - Super Hero	Avengers	Avengers.jpg	https://www.youtube.com/embed/eOrNdBpGMv8
+
+-->	jhon	 Drama - Moral	The shwashank redemption	The shwashank redemption.jpg	https://www.youtube.com/embed/6hB3S9bIaco
+
+-->Christopher nolan	 Action - Drama	Batman The Dark Knight	Batman The Dark Knight.jpg	https://www.youtube.com/embed/LDG9bisJEaI
+
+-->James	 Action - Drama	The Fight Club	The Fight Club.jpg	https://www.youtube.com/embed/qtRKdVHc-cE
+
+--> JK Rowling	 Mystic - Action - Drama	Harry Potter	Harry Potter.jpg	https://www.youtube.com/embed/sg81Lts5kYY
+
+-->Bob Marley	 Action - Super Hero	Justice League	Justice League.jpg	https://www.youtube.com/embed/3cxixDgHUYw
+
+-->James Wan	Action - Thriller	Suicide Squad	Suicide Squad.jpg	https://www.youtube.com/embed/CmRih_VtVAs
+
+--> Jhon	 Action Thriller Super hero	Spider Man	Spider Man.jpg	https://www.youtube.com/embed/TYMMOjBUPMM
+
+-->Christopher nolan	 Sci - Fi	Tenet	Tenet.jpg	https://www.youtube.com/embed/AZGcmvrTX9M
+
+-->James Cameron	 Drama	Joker	Joker.jpg	https://www.youtube.com/embed/zAGVQLHvwOY
+4	Hajime Isayama	 Anime - Action - Thriller	Attack On Titan	Attack On Titan.jpg	https://www.youtube.com/embed/ZefrVAetxVI
+5	James Wan	 Super Hero - Adventure	Aquaman	Aquaman.jpg	https://www.youtube.com/embed/WDkg3h8PCVU
+6	Russo brothers	 Action - Adventure - Super Hero	Avengers	Avengers.jpg	https://www.youtube.com/embed/eOrNdBpGMv8
+7	jhon	 Drama - Moral	The shwashank redemption	The shwashank redemption.jpg	https://www.youtube.com/embed/6hB3S9bIaco
+8	Christopher nolan	 Action - Drama	Batman The Dark Knight	Batman The Dark Knight.jpg	https://www.youtube.com/embed/LDG9bisJEaI
+9	James	 Action - Drama	The Fight Club	The Fight Club.jpg	https://www.youtube.com/embed/qtRKdVHc-cE
+10	JK Rowling	 Mystic - Action - Drama	Harry Potter	Harry Potter.jpg	https://www.youtube.com/embed/sg81Lts5kYY
+11	Bob Marley	 Action - Super Hero	Justice League	Justice League.jpg	https://www.youtube.com/embed/3cxixDgHUYw
+12	James Wan	Action - Thriller	Suicide Squad	Suicide Squad.jpg	https://www.youtube.com/embed/CmRih_VtVAs
+13	Jhon	 Action Thriller Super hero	Spider Man	Spider Man.jpg	https://www.youtube.com/embed/TYMMOjBUPMM
+15	Christopher nolan	 Sci - Fi	Tenet	Tenet.jpg	https://www.youtube.com/embed/AZGcmvrTX9M
+17	James Cameron	 Drama	Joker	Joker.jpg	https://www.youtube.com/embed/zAGVQLHvwOY
+18	Christopher nolan	 Sci - Fi - Time	Inception	Inception.jpg	https://www.youtube.com/embed/YoHD9XEInc0
+19	John	 Action - Drama	Gladiator	Gladiator.jpg	https://www.youtube.com/embed/owK1qxDselE
+20	Christopher nolan	Sci - fi	Interstellar	Interstellar.jpg	https://www.youtube.com/embed/zSWdZVtXT7E
